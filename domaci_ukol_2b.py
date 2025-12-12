@@ -63,8 +63,10 @@ data = '{"obchodniJmeno": "' + subject_name + '"}'
 try:
     response = requests.post(url, headers=headers, data=data)
     result = response.json()
+    if response.status_code != 200:
+        raise Exception("Selhalo spojení s API")
 except Exception:
-    print("Chyba při komunikaci s API.")
+    raise Exception("Selhalo spojení s API")
 
 with open("actual_subject.json", "w", encoding="utf-8") as file:
     json.dump(result, file, ensure_ascii=False, indent=4)
