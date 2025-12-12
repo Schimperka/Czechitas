@@ -49,7 +49,7 @@ Ve tvém programu musíš nahradit řetězec moneta proměnnou, která obsahuje 
 import requests
 import json
 
-nazev_subjektu = input("Zadejte název hledaného subjektu: ")
+subject_name = input("Zadejte název hledaného subjektu: ")
 
 url = "https://ares.gov.cz/ekonomicke-subjekty-v-be/rest/ekonomicke-subjekty/vyhledat"
 
@@ -58,13 +58,17 @@ headers = {
     "Content-Type": "application/json",
 }
 
-data = '{"obchodniJmeno": "' + nazev_subjektu + '"}'
-response = requests.post(url, headers=headers, data=data)
-vysledek = response.json()
+data = '{"obchodniJmeno": "' + subject_name + '"}'
+
+try:
+    response = requests.post(url, headers=headers, data=data)
+    result = response.json()
+except Exception:
+    print("Chyba při komunikaci s API.")
 
 with open("actual_subject.json", "w", encoding="utf-8") as file:
-    json.dump(vysledek, file, ensure_ascii=False, indent=4)
+    json.dump(result, file, ensure_ascii=False, indent=4)
 
-print(f'Nalezeno subjektů {vysledek["pocetCelkem"]}')
-for subjekt in vysledek["ekonomickeSubjekty"]:
-    print(f'{subjekt["obchodniJmeno"]}, {subjekt["ico"]}')
+print(f'Nalezeno subjektů {result["pocetCelkem"]}')
+for subject in result["ekonomickeSubjekty"]:
+    print(f'{subject["obchodniJmeno"]}, {subject["ico"]}')

@@ -19,14 +19,15 @@ Krakovská 583/9, Nové Město, 110 00 Praha 1
 import json
 import requests
 
-ICO = input("Zadejte IČO subjektu, o kterém chcete získat informace (IČO zadávejte bez mezer): ")
+ico = input("Zadejte IČO subjektu, o kterém chcete získat informace (IČO zadávejte bez mezer): ")
 
-while len(ICO) != 8:            #program odchytí, pokud uživatel nezadá osmimístný řetězec
+while len(ico) != 8:            #program odchytí, pokud uživatel nezadá osmimístný řetězec
     print("Vlož osmimístné číslo IČO")
-    ICO = input("Zadejte IČO subjektu, o kterém chcete získat informace (IČO zadávejte bez mezer): ")
+    ico = input("Zadejte IČO subjektu, o kterém chcete získat informace (IČO zadávejte bez mezer): ")
 
-url_ICO = "https://ares.gov.cz/ekonomicke-subjekty-v-be/rest/ekonomicke-subjekty/ICO"
-url_input = url_ICO[:-3] + ICO
+url_input = f"https://ares.gov.cz/ekonomicke-subjekty-v-be/rest/ekonomicke-subjekty/{ico}"
+#url_ico = "https://ares.gov.cz/ekonomicke-subjekty-v-be/rest/ekonomicke-subjekty/ICO"  elegantnější řešení, jak vložit IČO do odkazu
+#url_input = url_ico[:-3] + ico
 
 response = requests.get(url_input)
 data = response.json()
